@@ -1,0 +1,23 @@
+﻿
+Microsoft Visual Studio Solution File, Format Version 12.00
+# Visual Studio Version 16
+VisualStudioVersion = 16.0.31205.134
+MinimumVisualStudioVersion = 10.0.40219.1
+Project("{888888A0-9F3D-457C-B088-3A5042F75D52}") = "SpaceExpansionResearchProject", "SpaceExpansionResearchProject.pyproj", "{7E475C89-1228-4279-B5BB-DE336D9BC43E}"
+EndProject
+Global
+	GlobalSection(SolutionConfigurationPlatforms) = preSolution
+		Debug|Any CPU = Debug|Any CPU
+		Release|Any CPU = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(ProjectConfigurationPlatforms) = postSolution
+		{7E475C89-1228-4279-B5BB-DE336D9BC43E}.Debug|Any CPU.ActiveCfg = Debug|Any CPU
+		{7E475C89-1228-4279-B5BB-DE336D9BC43E}.Release|Any CPU.ActiveCfg = Release|Any CPU
+	EndGlobalSection
+	GlobalSection(SolutionProperties) = preSolution
+		HideSolutionNode = FALSE
+	EndGlobalSection
+	GlobalSection(ExtensibilityGlobals) = postSolution
+		SolutionGuid = {C80D27AD-8FA8-42ED-84DB-3679DB1C05D8}
+	EndGlobalSection
+EndGlobal
