@@ -1,19 +1,22 @@
 class Token(object):
     """Defines a token and the consequences of it's movement"""
     
-    def __init__(self, pos):
+    def __init__(self, pos, box):
         self.pos = pos
+        self.box = box
     def move(self, movement, boxesList):
         """This takes a movement in a string, and a list of boxes"""
         if(movement == 'left'):
             if(pos == 0):
-                boxesList[0] -= 1
-                pos = Len(boxesList) - 1
-                boxesList[pos] += 1
+                box.remove(self)
+                box = boxesList[-1]
+                pos = len(boxesList) - 1
+                box.append(self)
             else:
-                boxesList[pos] -= 1
+                box.remove(self)
                 pos -= 1
-                boxesList[pos] += 1
+                box = boxesList[pos]
+                box.append(self)
         if(movement == 'right'):
             if(pos == len(boxesList) - 1):
                 boxesList[pos] -= 1
@@ -23,4 +26,3 @@ class Token(object):
                 boxesList[pos] -= 1
                 pos =+ 1
                 boxesList[pos] += 1
-
