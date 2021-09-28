@@ -1,6 +1,7 @@
 from Token import Token
 from random import Random
 from Boxes import Boxes
+
 def TokenMovementAttraction(boxesList, TokenList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
     for token in TokenList:
@@ -17,12 +18,13 @@ def TokenMovementAttraction(boxesList, TokenList):
         d100 = rand.randint(1, 100)
         if(d100 <= lChance):
             token.move('left', boxesList)
-            print('token moves left')
+            # print('token moves left')
         elif(d100 > 100 - rChance):
             token.move('right', boxesList)
-            print('token moves right')
-        else:
-            print("token doesn't move")
+            # print('token moves right')
+        # else:
+
+            # print("token doesn't move")
 
 def BoxesChangingSplittingMerging(boxesList):
     """Defines a basic rule to make boxes split and merge, not meant to be final, just testing some stuff out"""
@@ -47,13 +49,13 @@ def BoxesChangingSplittingMerging(boxesList):
             if(d100 < 25 * (numTokens / boxesList[i - 1].GetNumTokens())): # Checks left
                 tokensMerging = boxesList[i - 1].tokenList
                 for token in tokensMerging:
-                    token.pos = i
                     token.box = box
                 box.tokenList.extend(tokensMerging)
                 boxesList.remove(boxesList[i - 1])
-
+                i -= 1
 
             rightBox = Boxes([])
+            box = boxesList[i]
             if (box == boxesList[-1]):
                 rightBox = boxesList[0]
             else:
@@ -67,6 +69,7 @@ def BoxesChangingSplittingMerging(boxesList):
                     token.box = box
                 box.tokenList.extend(tokensMerging)
                 boxesList.remove(rightBox)
+                i -= 1
         i += 1
 
 
@@ -89,6 +92,7 @@ def main():
     while (count < timeSteps):
         TokenRules[0](boxList,tokenList)
         boxesRules[0](boxList)
+        print(len(boxList))
 
 
 main()
