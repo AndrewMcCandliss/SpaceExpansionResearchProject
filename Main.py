@@ -50,6 +50,8 @@ def BoxesChangingSplittingMerging(boxesList):
                 tokensMerging = boxesList[i - 1].tokenList
                 for token in tokensMerging:
                     token.box = box
+                for token in box.tokenList:
+                    token.pos = i - 1
                 box.tokenList.extend(tokensMerging)
                 boxesList.remove(boxesList[i - 1])
                 i -= 1
@@ -64,12 +66,12 @@ def BoxesChangingSplittingMerging(boxesList):
 
             if(d100 < 25 * (numTokens / (rightBox.GetNumTokens() + 1))): # Checks Right
                 tokensMerging = rightBox.tokenList
-                for token in tokensMerging:
+                for token in tokensMerging: # if rightbox is index 0 problems will be caused with the token.pos, fix that
                     token.pos = i
                     token.box = box
                 box.tokenList.extend(tokensMerging)
                 boxesList.remove(rightBox)
-                
+                i -= 1
         i += 1
 
 
