@@ -7,22 +7,24 @@ class Token(object):
     def move(self, movement, boxesList):
         """This takes a movement in a string, and a list of boxes"""
         if(movement == 'left'):
-            if(pos == 0):
-                box.remove(self)
-                box = boxesList[-1]
-                pos = len(boxesList) - 1
-                box.append(self)
+            if(self.pos == 0):
+                self.box.tokenList.remove(self)
+                self.box = boxesList[-1]
+                self.pos = len(boxesList) - 1
+                self.box.tokenList.append(self)
             else:
-                box.remove(self)
-                pos -= 1
-                box = boxesList[pos]
-                box.append(self)
+                self.box.tokenList.remove(self)
+                self.pos -= 1
+                self.box = boxesList[self.pos]
+                self.box.tokenList.append(self)
         if(movement == 'right'):
-            if(pos == len(boxesList) - 1):
-                boxesList[pos] -= 1
-                pos = 0
-                boxesList[pos] += 1
+            if(self.pos == len(boxesList) - 1):
+                self.box.tokenList.remove(self)
+                self.pos = 0
+                self.box = boxesList[self.pos]
+                self.box.tokenList.append(self)
             else:
-                boxesList[pos] -= 1
-                pos =+ 1
-                boxesList[pos] += 1
+                self.box.tokenList.remove(self)
+                self.pos += 1
+                self.box = boxesList[self.pos]
+                self.box.tokenList.append(self)

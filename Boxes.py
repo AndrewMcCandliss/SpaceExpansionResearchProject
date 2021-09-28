@@ -3,5 +3,5 @@ class Boxes(object):
     def __init__(self, tokenList):
         self.tokenList = tokenList
     def GetNumTokens(self):
-        return len(tokenList)
+        return len(self.tokenList)
 

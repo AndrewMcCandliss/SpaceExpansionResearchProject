@@ -22,7 +22,7 @@
   </PropertyGroup>
   <ItemGroup>
     <Compile Include="BasicTesting\PythonTesting.py" />
-    <Compile Include="BasicTesting\Token.py" />
+    <Compile Include="BasicTesting\LegacyToken.py" />
     <Compile Include="Boxes.py">
       <SubType>Code</SubType>
     </Compile>

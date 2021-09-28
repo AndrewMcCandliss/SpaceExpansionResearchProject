@@ -1,5 +1,5 @@
 
-from Token import Token
+from LegacyToken import Token
 from random import Random
 
 def main():
