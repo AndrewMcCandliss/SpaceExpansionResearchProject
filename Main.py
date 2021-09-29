@@ -1,7 +1,7 @@
 from Token import Token
 from Boxes import Boxes
 from random import Random
-
+import math
 def TokenMovementAttraction(boxesList, TokenList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
     for token in TokenList:
@@ -75,6 +75,15 @@ def BoxesChangingSplittingMerging(boxesList):
 boxesRules = [BoxesChangingSplittingMerging]
 TokenRules = [TokenMovementAttraction]
 
+
+def CurrentEntropy (boxesList, tokenList):
+    numTokens = len(tokenList)
+    h = 0
+    for box in boxesList:
+        pBox = box.GetNumTokens() / numTokens
+        h += -pBox * math.log(pBox)
+
+    return h
 def main():
     timeSteps = 100
     tokens = 100
@@ -90,8 +99,9 @@ def main():
     while (count < timeSteps):
         TokenRules[0](boxList,tokenList)
         boxesRules[0](boxList)
-        print(len(boxList))
+        print(CurrentEntropy(boxList, tokenList))
         count += 1
 
 
 main()
+
