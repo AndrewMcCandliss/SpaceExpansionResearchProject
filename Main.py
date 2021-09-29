@@ -82,7 +82,7 @@ def main():
     tokenList = []
     count = 0
     while (count < tokens):
-        newToken = Token(0, boxList[0])
+        newToken = Token(boxList[0])
         boxList[0].tokenList.append(newToken)
         tokenList.append(newToken)
         count += 1
@@ -91,6 +91,7 @@ def main():
         TokenRules[0](boxList,tokenList)
         boxesRules[0](boxList)
         print(len(boxList))
+        count += 1
 
 
 main()

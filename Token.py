@@ -3,7 +3,7 @@ class Token(object):
     
     def __init__(self, box):
         self.box = box
-    def pos(self, boxesList)
+    def pos(self, boxesList):
         return self.box.GetPos(boxesList)
     def move(self, movement, boxesList):
         """This takes a movement in a string, and a list of boxes"""
