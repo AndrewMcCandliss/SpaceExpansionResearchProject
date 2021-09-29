@@ -1,16 +1,16 @@
 from Token import Token
-from random import Random
 from Boxes import Boxes
+from random import Random
 
 def TokenMovementAttraction(boxesList, TokenList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
     for token in TokenList:
-        lC = boxesList[token.pos - 1].GetNumTokens() + 1
-        if (token.pos == len(boxesList) - 1):
+        lC = boxesList[token.pos(boxesList) - 1].GetNumTokens() + 1
+        if (token.box == boxesList[-1]):
             rC = boxesList[0].GetNumTokens() + 1
         else:
-            rC = boxesList[token.pos + 1].GetNumTokens() + 1
-        cC = boxesList[token.pos].GetNumTokens() + 1
+            rC = boxesList[token.pos(boxesList) + 1].GetNumTokens() + 1
+        cC = token.box.GetNumTokens() + 1
         lChance = (lC * 100 ) / (lC + rC + cC)
         rChance = (rC * 100 ) / (lC + rC + cC)
         cChance = (cC * 100 ) / (lC + rC + cC)
@@ -41,7 +41,6 @@ def BoxesChangingSplittingMerging(boxesList):
             box.tokenList = aList
             newBox = Boxes(bList)
             for token in bList:
-                token.pos = i + 1
                 token.box = newBox
             boxesList.insert(i + 1, newBox)
         else: # merging chance rises if the difference in amounts of tokens in the current box and the next box is high
@@ -50,8 +49,6 @@ def BoxesChangingSplittingMerging(boxesList):
                 tokensMerging = boxesList[i - 1].tokenList
                 for token in tokensMerging:
                     token.box = box
-                for token in box.tokenList:
-                    token.pos = i - 1
                 box.tokenList.extend(tokensMerging)
                 boxesList.remove(boxesList[i - 1])
                 i -= 1
@@ -67,7 +64,6 @@ def BoxesChangingSplittingMerging(boxesList):
             if(d100 < 25 * (numTokens / (rightBox.GetNumTokens() + 1))): # Checks Right
                 tokensMerging = rightBox.tokenList
                 for token in tokensMerging: # if rightbox is index 0 problems will be caused with the token.pos, fix that
-                    token.pos = i
                     token.box = box
                 box.tokenList.extend(tokensMerging)
                 boxesList.remove(rightBox)

@@ -4,4 +4,6 @@ class Boxes(object):
         self.tokenList = tokenList
     def GetNumTokens(self):
         return len(self.tokenList)
-
+    def GetPos(self, boxesList):
+        return boxesList.index(self)
+        
