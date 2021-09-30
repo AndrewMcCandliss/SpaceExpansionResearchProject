@@ -45,7 +45,8 @@ def BoxesChangingSplittingMerging(boxesList):
             boxesList.insert(i + 1, newBox)
         else: # merging chance rises if the difference in amounts of tokens in the current box and the next box is high
             numTokens = box.GetNumTokens()
-            if(d100 < 25 * (numTokens / (boxesList[i - 1].GetNumTokens() + 1))): # Checks left
+            d100 = rand.randint(1,100)
+            if(d100 < 25 * (numTokens / (boxesList[i - 1].GetNumTokens() + 1 )) and len(boxesList) > 1): # Checks left
                 tokensMerging = boxesList[i - 1].tokenList
                 for token in tokensMerging:
                     token.box = box
@@ -61,13 +62,13 @@ def BoxesChangingSplittingMerging(boxesList):
                 rightBox = boxesList[i + 1]
 
 
-            if(d100 < 25 * (numTokens / (rightBox.GetNumTokens() + 1))): # Checks Right
+            if(d100 < 25 * (numTokens / (rightBox.GetNumTokens() + 1)) and len(boxesList) > 1): # Checks Right
                 tokensMerging = rightBox.tokenList
-                for token in tokensMerging: # if rightbox is index 0 problems will be caused with the token.pos, fix that
+                for token in tokensMerging:
                     token.box = box
                 box.tokenList.extend(tokensMerging)
                 boxesList.remove(rightBox)
-                i -= 1
+                
         i += 1
 
 
@@ -99,7 +100,8 @@ def main():
     while (count < timeSteps):
         TokenRules[0](boxList,tokenList)
         boxesRules[0](boxList)
-        print(CurrentEntropy(boxList, tokenList))
+        print(len(boxList))
+        #print(CurrentEntropy(boxList, tokenList))
         count += 1
 
 
