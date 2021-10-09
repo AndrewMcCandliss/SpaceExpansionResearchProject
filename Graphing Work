@@ -1,0 +1,148 @@
+# This is the graphical function that will display token distribution with time
+
+import matplotlib.pyplot as plt
+from random import Random
+import math
+   
+class Boxes(object):
+    def __init__(self, tokenList):
+        self.tokenList = tokenList
+    def GetNumTokens(self):
+        """Returns the amount of tokens attached to the box"""
+        return len(self.tokenList)
+    def GetPos(self, boxesList):
+        """Finds the position of the box in the box list"""
+        return boxesList.index(self)
+
+   
+class Token(object):
+    
+    def __init__(self, box):
+        self.box = box
+    def pos(self, boxesList):
+        return self.box.GetPos(boxesList)
+    def move(self, movement, boxesList):
+        if(movement == 'left'):
+            if(self.pos(boxesList) == 0):
+                self.box.tokenList.remove(self)
+                self.box = boxesList[-1]
+                self.box.tokenList.append(self)
+            else:
+                self.box.tokenList.remove(self)
+                self.box = boxesList[self.pos(boxesList) - 1]
+                self.box.tokenList.append(self)
+        if(movement == 'right'):
+            if(self.pos(boxesList) == len(boxesList) - 1):
+                self.box.tokenList.remove(self)
+                self.box = boxesList[0]
+                self.box.tokenList.append(self)
+            else:
+                self.box.tokenList.remove(self)
+                self.box = boxesList[self.pos(boxesList) + 1]
+                self.box.tokenList.append(self)
+
+def CurrentEntropy (boxesList, tokenList):
+    numTokens = len(tokenList)
+    h = 0
+    for box in boxesList:
+        pBox = box.GetNumTokens() / numTokens
+        h += -pBox * math.log(pBox)
+def BoxesChangingSplittingMerging(boxesList):
+    """Defines a basic rule to make boxes split and merge, not meant to be final, just testing some stuff out"""
+    i = 0
+    while (i < len(boxesList)):
+        box = boxesList[i]
+        rand = Random()
+        d100 = rand.randint(1,100)
+        if(d100 < box.GetNumTokens()): # splitting chance rises with the amount of tokens in the box
+            splitList = box.tokenList
+            middleIndex = len(splitList) // 2
+            aList = splitList[:middleIndex]
+            bList = splitList[middleIndex:]
+            box.tokenList = aList
+            newBox = Boxes(bList)
+            for token in bList:
+                token.box = newBox
+            boxesList.insert(i + 1, newBox)
+        else: # merging chance rises if the difference in amounts of tokens in the current box and the next box is high
+            numTokens = box.GetNumTokens()
+            d100 = rand.randint(1,100)
+            if(d100 < 25 * (numTokens / (boxesList[i - 1].GetNumTokens() + 1 )) and len(boxesList) > 1): # Checks left
+                tokensMerging = boxesList[i - 1].tokenList
+                for token in tokensMerging:
+                    token.box = box
+                box.tokenList.extend(tokensMerging)
+                boxesList.remove(boxesList[i - 1])
+                i -= 1
+
+            rightBox = Boxes([])
+            box = boxesList[i]
+            if (box == boxesList[-1]):
+                rightBox = boxesList[0]
+            else:
+                rightBox = boxesList[i + 1]
+
+
+            if(d100 < 25 * (numTokens / (rightBox.GetNumTokens() + 1)) and len(boxesList) > 1): # Checks Right
+                tokensMerging = rightBox.tokenList
+                for token in tokensMerging:
+                    token.box = box
+                box.tokenList.extend(tokensMerging)
+                boxesList.remove(rightBox)
+                
+        i += 1
+def TokenMovementAttraction(boxesList, TokenList):
+    """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
+    for token in TokenList:
+        lC = boxesList[token.pos(boxesList) - 1].GetNumTokens() + 1
+        if (token.box == boxesList[-1]):
+            rC = boxesList[0].GetNumTokens() + 1
+        else:
+            rC = boxesList[token.pos(boxesList) + 1].GetNumTokens() + 1
+        cC = token.box.GetNumTokens() + 1
+        lChance = (lC * 100 ) / (lC + rC + cC)
+        rChance = (rC * 100 ) / (lC + rC + cC)
+        cChance = (cC * 100 ) / (lC + rC + cC)
+        rand = Random()
+        d100 = rand.randint(1, 100)
+        if(d100 <= lChance):
+            token.move('left', boxesList)
+            # print('token moves left')
+        elif(d100 > 100 - rChance):
+            token.move('right', boxesList)
+def main_with_graph():
+    boxesRules = [BoxesChangingSplittingMerging]
+    TokenRules = [TokenMovementAttraction]
+    class Boxes(object):
+        def __init__(self, tokenList):
+            self.tokenList = tokenList
+        def GetNumTokens(self):
+            return len(tokenList)
+        def GetPos(self, boxesList):
+            return boxesList.index(self)
+    timeSteps = 3
+    tokens = 100
+    boxesList = [Boxes([])]
+    count = 0
+    tokenList = []
+    box_number_list = []
+    token_number_list = []
+    while (count < tokens):
+        newToken = Token(boxesList[0])
+        boxesList[0].tokenList.append(newToken)
+        tokenList.append(newToken)
+        count += 1
+    count = 0
+    while (count < timeSteps):
+        boxesRules[0](boxesList)
+        TokenRules[0](boxesList,tokenList)
+        for j in range(0,len(boxesList)):
+            box_number_list.append(j)
+            new_amount = Boxes.GetNumTokens(j)
+            token_number_list.append(new_amount)
+        plt.bar(box_number_list,token_number_list)
+        plt.xlabel('Box Number')
+        plt.ylabel('Number of Tokens')
+        plt.show()
+        count += 1
+main()
