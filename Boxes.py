@@ -2,6 +2,7 @@ class Boxes(object):
     """Describes a box and what it contains"""
     def __init__(self, tokenList):
         self.tokenList = tokenList
+
     def GetNumTokens(self):
         """Returns the amount of tokens attached to the box"""
         return len(self.tokenList)

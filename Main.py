@@ -78,13 +78,39 @@ TokenRules = [TokenMovementAttraction]
 
 
 def CurrentEntropy (boxesList, tokenList):
+    """Finds the current entropy"""
     numTokens = len(tokenList)
     h = 0
     for box in boxesList:
         pBox = box.GetNumTokens() / numTokens
-        h += -pBox * math.log(pBox)
+        if(pBox == 0):
+            h += 0
+        else:
+            h += -pBox * math.log(pBox)
 
     return h
+def MaxEntropy (boxesList, tokenList):
+    """Finds maximum entropy using the more detailed algorithm"""
+    numTokens = len(tokenList)
+    numBoxes = len(boxesList)
+    evenBoxes = [0] * numBoxes
+    token = 1
+    box = 0
+    while(token <= numTokens):
+        if(box >= numBoxes):
+            box = 0
+        evenBoxes[box] += 1
+        box += 1
+        token += 1
+    hMax = 0
+    for val in evenBoxes:
+        pBox = val / numTokens
+        if (pBox == 0):
+            hMax += 0
+        else:
+            hMax += -pBox * math.log(pBox)
+    return hMax
+
 def main():
     timeSteps = 100
     tokens = 100
@@ -100,8 +126,10 @@ def main():
     while (count < timeSteps):
         TokenRules[0](boxList,tokenList)
         boxesRules[0](boxList)
-        print(len(boxList))
-        #print(CurrentEntropy(boxList, tokenList))
+        #print(len(boxList))
+        print(CurrentEntropy(boxList, tokenList), end=' ')
+        print(MaxEntropy(boxList, tokenList))
+        
         count += 1
 
 
