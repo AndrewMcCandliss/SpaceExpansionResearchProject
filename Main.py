@@ -5,29 +5,30 @@ import matplotlib.pyplot as plt
 import math
 
 
-def TokenMovementAttraction(boxesList, TokenList):
+def TokenMovementAttraction(boxesList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
-    for token in TokenList:
-        lC = boxesList[token.pos(boxesList) - 1].GetNumTokens() + 1
-        if (token.box == boxesList[-1]):
-            rC = boxesList[0].GetNumTokens() + 1
-        else:
-            rC = boxesList[token.pos(boxesList) + 1].GetNumTokens() + 1
-        cC = token.box.GetNumTokens() + 1
-        lChance = (lC * 100 ) / (lC + rC + cC)
-        rChance = (rC * 100 ) / (lC + rC + cC)
-        cChance = (cC * 100 ) / (lC + rC + cC)
-        rand = Random()
-        d100 = rand.randint(1, 100)
-        if(d100 <= lChance):
-            token.move('left', boxesList)
-            # print('token moves left')
-        elif(d100 > 100 - rChance):
-            token.move('right', boxesList)
-            # print('token moves right')
-        # else:
+    for box in boxesList:
+        for token in box.tokenList:
+            lC = boxesList[token.pos(boxesList) - 1].GetNumTokens() + 1
+            if (token.box == boxesList[-1]):
+                rC = boxesList[0].GetNumTokens() + 1
+            else:
+                rC = boxesList[token.pos(boxesList) + 1].GetNumTokens() + 1
+            cC = token.box.GetNumTokens() + 1
+            lChance = (lC * 100 ) / (lC + rC + cC)
+            rChance = (rC * 100 ) / (lC + rC + cC)
+            cChance = (cC * 100 ) / (lC + rC + cC)
+            rand = Random()
+            d100 = rand.randint(1, 100)
+            if(d100 <= lChance):
+                token.move('left', boxesList)
+                # print('token moves left')
+            elif(d100 > 100 - rChance):
+                token.move('right', boxesList)
+                # print('token moves right')
+            # else:
 
-            # print("token doesn't move")
+                # print("token doesn't move")
 
 def BoxesChangingSplittingMerging(boxesList):
     """Defines a basic rule to make boxes split and merge, not meant to be final, just testing some stuff out"""
@@ -75,14 +76,28 @@ def BoxesChangingSplittingMerging(boxesList):
         i += 1
 
 
+def RandomTokenPlacementSetup(numBoxes, numTokens):
+    boxesList = []
+    for i in range(0, numBoxes):
+        boxesList.append(Boxes([]))
+    rnd = Random()
+    for i in range(0, numTokens):
+        token = Token(boxesList[rnd.randint(0, numBoxes - 1)])
+        token.box.tokenList.append(token)
+    return boxesList
 
+startRules = [RandomTokenPlacementSetup]
 boxesRules = [BoxesChangingSplittingMerging]
-TokenRules = [TokenMovementAttraction]
+tokenRules = [TokenMovementAttraction]
 
+def CurrentNumTokens(boxesList):
+    numTokens = 0
+    for box in boxesList:
+        numTokens += box.GetNumTokens()
+    return numTokens
 
-def CurrentEntropy (boxesList, tokenList):
+def CurrentEntropy (boxesList, numTokens):
     """Finds the current entropy"""
-    numTokens = len(tokenList)
     h = 0
     for box in boxesList:
         pBox = box.GetNumTokens() / numTokens
@@ -92,9 +107,8 @@ def CurrentEntropy (boxesList, tokenList):
             h += -pBox * math.log(pBox)
 
     return h
-def MaxEntropy (boxesList, tokenList):
+def MaxEntropy (boxesList, numTokens):
     """Finds maximum entropy using the more detailed algorithm"""
-    numTokens = len(tokenList)
     numBoxes = len(boxesList)
     evenBoxes = [0] * numBoxes
     token = 1
@@ -116,22 +130,17 @@ def MaxEntropy (boxesList, tokenList):
 
 def main():
     timeSteps = 100
-    tokens = 100
-    boxList = [Boxes([])] * 5
-    tokenList = []
+    startTokens = 100
+    startBoxes = 5
+    boxesList = startRules[0](startBoxes, startTokens)
     count = 0
-    while (count < tokens):
-        newToken = Token(boxList[0])
-        boxList[0].tokenList.append(newToken)
-        tokenList.append(newToken)
-        count += 1
-    count = 0
+    print("  Current Entropy,  Maximum Entropy")
     while (count < timeSteps):
-        TokenRules[0](boxList,tokenList)
-        boxesRules[0](boxList)
+        #tokenRules[0](boxList)
+        #boxesRules[0](boxList)
         #print(len(boxList))
-        print(CurrentEntropy(boxList, tokenList), end=' ')
-        print(MaxEntropy(boxList, tokenList))
+        print(CurrentEntropy(boxesList, startTokens), end=', ')
+        print(MaxEntropy(boxesList, startTokens))
         count += 1
 
 
