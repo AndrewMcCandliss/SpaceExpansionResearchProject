@@ -2,10 +2,10 @@ Uninteresting rules:
 
 For tokens
 Probability to go right, left, or center
-
+1. Static tokens 
 
 For boxes
-num of boxes = constant
+1. num of boxes = constant
 
 
 Starting States:
@@ -20,3 +20,8 @@ Information Entropy
 	Each box, for Pbox = #tokens in box / total # of tokens
 	h = 0 when all tokens are in one box
 	Need to calculate h and hmax
+
+Standard Deviation:
+	Keep track of the average and the width
+	Standard deviation is confusing in a cyclical system
+	Keep in the back of head

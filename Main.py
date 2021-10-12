@@ -1,7 +1,10 @@
 from Token import Token
 from Boxes import Boxes
 from random import Random
+import matplotlib.pyplot as plt
 import math
+
+
 def TokenMovementAttraction(boxesList, TokenList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
     for token in TokenList:
@@ -114,7 +117,7 @@ def MaxEntropy (boxesList, tokenList):
 def main():
     timeSteps = 100
     tokens = 100
-    boxList = [Boxes([])]
+    boxList = [Boxes([])] * 5
     tokenList = []
     count = 0
     while (count < tokens):
@@ -129,7 +132,6 @@ def main():
         #print(len(boxList))
         print(CurrentEntropy(boxList, tokenList), end=' ')
         print(MaxEntropy(boxList, tokenList))
-        
         count += 1
 
 
