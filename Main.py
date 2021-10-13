@@ -77,6 +77,7 @@ def BoxesChangingSplittingMerging(boxesList):
 
 
 def RandomTokenPlacementSetup(numBoxes, numTokens):
+    """Randomly places an amount of tokens into an amount of boxes, then returns a list of boxes"""
     boxesList = []
     for i in range(0, numBoxes):
         boxesList.append(Boxes([]))
@@ -128,6 +129,15 @@ def MaxEntropy (boxesList, numTokens):
             hMax += -pBox * math.log(pBox)
     return hMax
 
+def Graphing (boxesList):
+    xList = []
+    heightList = []
+    for i in range(0, len(boxesList)):
+        xList.append(i + 1)
+        heightList.append(boxesList[i].GetNumTokens())
+    plt.bar(xList, heightList)
+    plt.show()
+
 def main():
     timeSteps = 100
     startTokens = 100
@@ -136,11 +146,13 @@ def main():
     count = 0
     print("  Current Entropy,  Maximum Entropy")
     while (count < timeSteps):
-        #tokenRules[0](boxList)
-        #boxesRules[0](boxList)
-        #print(len(boxList))
+        #tokenRules[0](boxesList)
+        #boxesRules[0](boxesList)
+        #print(len(boxesList))
         print(CurrentEntropy(boxesList, startTokens), end=', ')
-        print(MaxEntropy(boxesList, startTokens))
+        print(MaxEntropy(boxesList, startTokens), end=', ')
+        print(CurrentNumTokens(boxesList))
+        Graphing(boxesList)
         count += 1
 
 
