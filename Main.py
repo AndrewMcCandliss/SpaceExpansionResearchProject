@@ -7,19 +7,19 @@ import math
 
 def TokenMovementAttraction(boxesList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
-    for box in boxesList: #Iterates through each box in the boxesList
-        for token in box.tokenList: #Iterates through each token in the current box's tokenList
-            #Left Chance is the amount of tokens in the box to the left (accounting for the left most box) + 1
-            lC = boxesList[token.pos(boxesList) - 1].GetNumTokens() + 1
-            #Right Chance is not accounted for, so use an if
+    #"Base Chance" which affects how much a token affects the overall chance
+    baseValue = 33
+    #"Attraction Value" which affects how much each token is worth, negative values repulse
+    attraction = -1
+    for box in boxesList:
+        for token in box.tokenList:
+            lC = boxesList[token.pos(boxesList) - 1].GetNumTokens() * attraction + baseValue
             if (token.box == boxesList[-1]):
-                rC = boxesList[0].GetNumTokens() + 1
+                rC = boxesList[0].GetNumTokens() * attraction + baseValue
             else:
-                rC = boxesList[token.pos(boxesList) + 1].GetNumTokens() + 1
-            #Just the amount in the current box
-            cC = token.box.GetNumTokens() + 1
-            #
-            lChance = (lC * 100 ) / (lC + rC + cC) 
+                rC = boxesList[token.pos(boxesList) + 1].GetNumTokens() * attraction + baseValue
+            cC = token.box.GetNumTokens() * attraction + baseValue
+            lChance = (lC * 100 ) / (lC + rC + cC)
             rChance = (rC * 100 ) / (lC + rC + cC)
             cChance = (cC * 100 ) / (lC + rC + cC)
             rand = Random()
@@ -34,6 +34,9 @@ def TokenMovementAttraction(boxesList):
 
                 # print("token doesn't move")
 
+
+
+
 def BoxesChangingSplittingMerging(boxesList):
     """Defines a basic rule to make boxes split and merge, not meant to be final, just testing some stuff out"""
     i = 0
@@ -41,7 +44,8 @@ def BoxesChangingSplittingMerging(boxesList):
         box = boxesList[i]
         rand = Random()
         d100 = rand.randint(1,100)
-        if(d100 < box.GetNumTokens()): # splitting chance rises with the amount of tokens in the box
+        splitFactor = 2 #Changes how much the number of tokens affects splitting chance
+        if(d100 < box.GetNumTokens() * splitFactor): # splitting chance rises with the amount of tokens in the box
             splitList = box.tokenList
             middleIndex = len(splitList) // 2
             aList = splitList[:middleIndex]
@@ -150,12 +154,12 @@ def main():
     count = 0
     print("  Current Entropy,  Maximum Entropy")
     while (count < timeSteps):
-        #tokenRules[0](boxesList)
-        #boxesRules[0](boxesList)
+        tokenRules[0](boxesList)
+        boxesRules[0](boxesList)
         #print(len(boxesList))
         print(CurrentEntropy(boxesList, startTokens), end=', ')
         print(MaxEntropy(boxesList, startTokens), end=', ')
-        print(CurrentNumTokens(boxesList))
+        print(len(boxesList))
         Graphing(boxesList)
         count += 1
 
