@@ -7,15 +7,19 @@ import math
 
 def TokenMovementAttraction(boxesList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
-    for box in boxesList:
-        for token in box.tokenList:
+    for box in boxesList: #Iterates through each box in the boxesList
+        for token in box.tokenList: #Iterates through each token in the current box's tokenList
+            #Left Chance is the amount of tokens in the box to the left (accounting for the left most box) + 1
             lC = boxesList[token.pos(boxesList) - 1].GetNumTokens() + 1
+            #Right Chance is not accounted for, so use an if
             if (token.box == boxesList[-1]):
                 rC = boxesList[0].GetNumTokens() + 1
             else:
                 rC = boxesList[token.pos(boxesList) + 1].GetNumTokens() + 1
+            #Just the amount in the current box
             cC = token.box.GetNumTokens() + 1
-            lChance = (lC * 100 ) / (lC + rC + cC)
+            #
+            lChance = (lC * 100 ) / (lC + rC + cC) 
             rChance = (rC * 100 ) / (lC + rC + cC)
             cChance = (cC * 100 ) / (lC + rC + cC)
             rand = Random()
