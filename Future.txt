@@ -20,6 +20,8 @@ Information Entropy
 	Each box, for Pbox = #tokens in box / total # of tokens
 	h = 0 when all tokens are in one box
 	Need to calculate h and hmax
+Graphing
+	Make a graph of max entropy and entropy over time
 
 Standard Deviation:
 	Keep track of the average and the width
