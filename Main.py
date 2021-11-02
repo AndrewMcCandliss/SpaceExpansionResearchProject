@@ -3,7 +3,7 @@ from Boxes import Boxes
 from random import Random
 import matplotlib.pyplot as plt
 import math
-
+import EntropyGraph
 
 def TokenMovementAttraction(boxesList):
     """Defines a rule for how token attraction might work, but no attraction variable is actually taken into account"""
@@ -105,9 +105,10 @@ def CurrentNumTokens(boxesList):
         numTokens += box.GetNumTokens()
     return numTokens
 
-def CurrentEntropy (boxesList, numTokens):
+def CurrentEntropy (boxesList):
     """Finds the current entropy"""
     h = 0
+    numTokens = CurrentNumTokens(boxesList)
     for box in boxesList:
         pBox = box.GetNumTokens() / numTokens
         if(pBox == 0):
@@ -116,12 +117,13 @@ def CurrentEntropy (boxesList, numTokens):
             h += -pBox * math.log(pBox)
 
     return h
-def MaxEntropy (boxesList, numTokens):
+def MaxEntropy (boxesList):
     """Finds maximum entropy using the more detailed algorithm"""
     numBoxes = len(boxesList)
     evenBoxes = [0] * numBoxes
     token = 1
     box = 0
+    numTokens = CurrentNumTokens(boxesList)
     while(token <= numTokens):
         if(box >= numBoxes):
             box = 0
@@ -153,15 +155,24 @@ def main():
     boxesList = startRules[0](startBoxes, startTokens)
     count = 0
     print("  Current Entropy,  Maximum Entropy")
+    maxEntropy = []
+    currentEntropy = []
     while (count < timeSteps):
-        #tokenRules[0](boxesList)
+        tokenRules[0](boxesList)
         #boxesRules[0](boxesList)
         #print(len(boxesList))
-        print(CurrentEntropy(boxesList, startTokens), end=', ')
-        print(MaxEntropy(boxesList, startTokens), end=', ')
+        print(CurrentEntropy(boxesList), end=', ')
+        print(MaxEntropy(boxesList), end=', ')
         print(len(boxesList))
-        Graphing(boxesList)
+        #Graphing(boxesList)
+        maxEntropy.append(MaxEntropy(boxesList))
+        currentEntropy.append(CurrentEntropy(boxesList))
         count += 1
+    fig = plt.figure()
+    ax = fig.add_subplot(1, 1, 1)
+    ax.plot(maxEntropy)
+    ax.plot(currentEntropy)
+    plt.show()
 
 
 main()

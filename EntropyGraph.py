@@ -48,7 +48,7 @@ def find_minimum_g(upper_limit, lower_limit, delta_x):
             minimum = y
     return minimum
 
-def graph_f(upper_limit, lower_limit, delta_x, turtle_name,margin_fraction):
+def graph_f(upper_limit, lower_limit, delta_x, turtle_name, margin_fraction):
     turtle_name = turtle.Turtle()
     side_margins = margin_fraction * (upper_limit - lower_limit)
     top_bottom_margins = margin_fraction * (top - bottom)
@@ -62,7 +62,7 @@ def graph_f(upper_limit, lower_limit, delta_x, turtle_name,margin_fraction):
         y = f(x)
         turtle_name.goto(x,y)
 
-def graph_g(upper_limit, lower_limit, delta_x, turtle_name,margin_fraction):
+def graph_g(upper_limit, lower_limit, delta_x, turtle_name, margin_fraction):
     turtle_name = turtle.Turtle()
     side_margins = margin_fraction * (upper_limit - lower_limit)
     top_bottom_margins = margin_fraction * (top - bottom)
