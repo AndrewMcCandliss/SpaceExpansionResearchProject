@@ -147,7 +147,7 @@ def main():
     print("  Current Entropy,  Maximum Entropy")
     maxEntropy = []
     currentEntropy = []
-    while (count < timeSteps):
+    while (CurrentEntropy(boxesList) < MaxEntropy(boxesList) * .95):
         tokenRules[0](boxesList)
         #boxesRules[0](boxesList)
         #print(len(boxesList))
