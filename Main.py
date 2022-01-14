@@ -169,9 +169,11 @@ def main():
     while (timeSteps > count):
         tokenRules[0](boxesList)
         #boxesRules[0](boxesList)
-        print(CurrentEntropy(boxesList), end=', ')
-        print(MaxEntropy(boxesList), end=', ')
         #print(len(boxesList))
+        #print(CurrentEntropy(boxesList), end=', ')
+        #print(MaxEntropy(boxesList), end=', ')
+        #print(len(boxesList))
+        #Graphing(boxesList)
         maxEntropy.append(MaxEntropy(boxesList))
         currentEntropy.append(CurrentEntropy(boxesList))
         print(CircularMean(boxesList))
