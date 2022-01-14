@@ -138,31 +138,51 @@ def Graphing (boxesList):
     plt.bar(xList, heightList)
     plt.show()
 
+def CircularMean (boxesList):
+    circularStep = (2 * math.pi) / len(boxesList)
+    meanX = 0
+    meanY = 0
+    for box in boxesList:
+        circularPos = box.GetPos(boxesList) * circularStep
+        x = math.cos(circularPos)
+        y = math.sin(circularPos)
+        meanX += x * box.GetNumTokens()
+        meanY += y * box.GetNumTokens()
+    meanX /= CurrentNumTokens(boxesList)
+    meanY /= CurrentNumTokens(boxesList)
+    r = math.sqrt(math.pow(meanX, 2) + math.pow(meanY, 2))
+    theta = math.tan(meanY / meanX)
+    if (theta < 0):
+        theta += 2 * math.pi
+    index = theta / circularStep
+    return [r, index]
+
 def main():
-    timeSteps = 10000
-    startTokens = 1000
-    startBoxes = 1000
+    timeSteps = 100
+    startTokens = 100
+    startBoxes = 10
     boxesList = startRules[1](startBoxes, startTokens)
     count = 0
     print("  Current Entropy,  Maximum Entropy")
     maxEntropy = []
     currentEntropy = []
-    while (CurrentEntropy(boxesList) < MaxEntropy(boxesList) * .95):
+    while (timeSteps > count):
         tokenRules[0](boxesList)
         #boxesRules[0](boxesList)
-        #print(len(boxesList))
         print(CurrentEntropy(boxesList), end=', ')
         print(MaxEntropy(boxesList), end=', ')
-        print(len(boxesList))
-        #Graphing(boxesList)
+        #print(len(boxesList))
         maxEntropy.append(MaxEntropy(boxesList))
         currentEntropy.append(CurrentEntropy(boxesList))
+        print(CircularMean(boxesList))
+        #Graphing(boxesList)
         count += 1
     fig = plt.figure()
     ax = fig.add_subplot(1, 1, 1)
     ax.plot(maxEntropy)
     ax.plot(currentEntropy)
     plt.show()
+    Graphing(boxesList)
 
 
 main()
