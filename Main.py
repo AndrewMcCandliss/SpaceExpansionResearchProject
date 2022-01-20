@@ -3,7 +3,6 @@ from Boxes import Boxes
 from random import Random
 import matplotlib.pyplot as plt
 import math
-import EntropyGraph
 
 def TokenMovementRandom(boxesList):
     """Random."""
